@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_kit_date_range">%1$s - %2$s</string>
+    <string name="question_kit_title_select_date_range">Select Date Range</string>
+    <string name="question_kit_instructions_select_date_range">Select the date range above by tapping on the first and last days of the time period in question.</string>
+</resources>

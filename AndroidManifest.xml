@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.audacious_software.question_kit">
-    <application></application>
+    <application>
+        <activity android:name=".DateRangeActivity" />
+    </application>
 </manifest>
