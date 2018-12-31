@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,6 +14,7 @@ import com.audacious_software.question_kit.cards.QuestionCard;
 import com.audacious_software.question_kit.cards.SelectMultipleCard;
 import com.audacious_software.question_kit.cards.SelectOneCard;
 import com.audacious_software.question_kit.cards.SingleLineTextInputCard;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class QuestionsActivity extends AppCompatActivity {
     private FloatingActionButton mCompleteButton;

@@ -2,23 +2,19 @@ package com.audacious_software.question_kit.cards;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.audacious_software.question_kit.DateRangeActivity;
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import androidx.cardview.widget.CardView;
 
 public class QuestionCard extends FrameLayout {
     private final CardView mCardView;

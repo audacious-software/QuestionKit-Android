@@ -1,10 +1,8 @@
 package com.audacious_software.question_kit.cards;
 
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.audacious_software.question_kit.QuestionsActivity;
@@ -15,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 public class SelectMultipleCard extends QuestionCard {
     private ArrayList<String> mSelected = new ArrayList<>();

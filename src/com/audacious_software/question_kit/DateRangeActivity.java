@@ -3,9 +3,6 @@ package com.audacious_software.question_kit;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -16,6 +13,10 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnRangeSelectedListener;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DateRangeActivity extends AppCompatActivity {
     public static final String QUESTION_KEY = "com.audacious_software.question_kit.DateRangeActivity.QUESTION_KEY";

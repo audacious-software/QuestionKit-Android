@@ -1,7 +1,5 @@
 package com.audacious_software.question_kit.cards;
 
-import android.support.design.widget.TextInputEditText;
-import android.text.TextWatcher;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;

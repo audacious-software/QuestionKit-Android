@@ -1,12 +1,11 @@
 package com.audacious_software.question_kit.cards;
 
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
