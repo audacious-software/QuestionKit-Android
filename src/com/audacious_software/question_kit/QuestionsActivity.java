@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import com.audacious_software.question_kit.cards.DateRangeCard;
 import com.audacious_software.question_kit.cards.MultiLineTextInputCard;
 import com.audacious_software.question_kit.cards.QuestionCard;
+import com.audacious_software.question_kit.cards.ReadOnlyTextCard;
 import com.audacious_software.question_kit.cards.SelectMultipleCard;
 import com.audacious_software.question_kit.cards.SelectOneCard;
+import com.audacious_software.question_kit.cards.SelectTimeCard;
 import com.audacious_software.question_kit.cards.SingleLineTextInputCard;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -144,7 +146,7 @@ public class QuestionsActivity extends AppCompatActivity {
         this.mRootLayout.invalidate();
     }
 
-    private QuestionCard cardForPrompt(JSONObject prompt) throws JSONException {
+    public QuestionCard cardForPrompt(JSONObject prompt) throws JSONException {
         if ("multi-line".equals(prompt.getString("prompt-type"))) {
             return new MultiLineTextInputCard(this, prompt);
         } else if ("date-range".equals(prompt.getString("prompt-type"))) {
@@ -155,6 +157,12 @@ public class QuestionsActivity extends AppCompatActivity {
             return new SelectOneCard(this, prompt);
         } else if ("select-multiple".equals(prompt.getString("prompt-type"))) {
             return new SelectMultipleCard(this, prompt);
+        } else if ("select-multiple".equals(prompt.getString("prompt-type"))) {
+            return new SelectMultipleCard(this, prompt);
+        } else if ("select-time".equals(prompt.getString("prompt-type"))) {
+            return new SelectTimeCard(this, prompt);
+        } else if ("read-only-text".equals(prompt.getString("prompt-type"))) {
+            return new ReadOnlyTextCard(this, prompt);
         }
 
         return new QuestionCard(this, prompt);
@@ -302,6 +310,68 @@ public class QuestionsActivity extends AppCompatActivity {
         return passes;
     }
 
+    private boolean evaluateOrConstraints(JSONArray constraints, HashMap<String,Object> answers) throws JSONException {
+        boolean passes = false;
+
+        for (int j = 0; j < constraints.length(); j++) {
+            JSONObject constraint = constraints.getJSONObject(j);
+
+            String key = constraint.getString("key");
+            String operator = constraint.getString("operator");
+            Object value = constraint.get("value");
+
+            Object answer = this.mAnswers.get(key);
+
+            if (answer == null) {
+
+            } else {
+                if ("=".equals(operator) && answer.equals(value)) {
+                    passes = true;
+                } else if ("!=".equals(operator) && answer.equals(value) == false) {
+                    passes = true;
+                } else if ("<".equals(operator)) {
+                    if (value instanceof Comparable && answer instanceof Comparable) {
+                        Comparable valueComparable = (Comparable) value;
+                        Comparable answerComparable = (Comparable) answer;
+
+                        if (answerComparable.compareTo(valueComparable) < 1) {
+                            passes = true;
+                        }
+                    }
+                } else if ("<=".equals(operator)) {
+                    if (value instanceof Comparable && answer instanceof Comparable) {
+                        Comparable valueComparable = (Comparable) value;
+                        Comparable answerComparable = (Comparable) answer;
+
+                        if (answerComparable.compareTo(valueComparable) <= 0) {
+                            passes = true;
+                        }
+                    }
+                } else if (">".equals(operator)) {
+                    if (value instanceof Comparable && answer instanceof Comparable) {
+                        Comparable valueComparable = (Comparable) value;
+                        Comparable answerComparable = (Comparable) answer;
+
+                        if (answerComparable.compareTo(valueComparable) > -1) {
+                            passes = true;
+                        }
+                    }
+                } else if (">=".equals(operator)) {
+                    if (value instanceof Comparable && answer instanceof Comparable) {
+                        Comparable valueComparable = (Comparable) value;
+                        Comparable answerComparable = (Comparable) answer;
+
+                        if (answerComparable.compareTo(valueComparable) >= 0) {
+                            passes = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return passes;
+    }
+
     private List<String> fetchActivePrompts() {
         ArrayList<String> active = new ArrayList<>();
 
@@ -313,8 +383,14 @@ public class QuestionsActivity extends AppCompatActivity {
 
                 JSONArray constraints = prompt.getJSONArray("constraints");
 
-                if (this.evaluateConstraints(constraints, this.mAnswers)) {
-                    active.add(prompt.getString("key"));
+                if (prompt.has("constraint-matches") && "any".equals(prompt.getString("constraint-matches"))) {
+                    if (this.evaluateOrConstraints(constraints, this.mAnswers)) {
+                        active.add(prompt.getString("key"));
+                    }
+                } else {
+                    if (this.evaluateConstraints(constraints, this.mAnswers)) {
+                        active.add(prompt.getString("key"));
+                    }
                 }
             }
         } catch (JSONException e) {
