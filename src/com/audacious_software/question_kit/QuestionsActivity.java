@@ -88,6 +88,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
         this.mHandler = new Handler(Looper.getMainLooper());
 
+        Log.e("ENVIRO", "JSON QUESTION DEF: " + jsonDefinition);
+
         try {
             this.updateQuestions(new JSONObject(jsonDefinition));
         } catch (JSONException e) {
@@ -155,8 +157,6 @@ public class QuestionsActivity extends AppCompatActivity {
             return new SingleLineTextInputCard(this, prompt);
         } else if ("select-one".equals(prompt.getString("prompt-type"))) {
             return new SelectOneCard(this, prompt);
-        } else if ("select-multiple".equals(prompt.getString("prompt-type"))) {
-            return new SelectMultipleCard(this, prompt);
         } else if ("select-multiple".equals(prompt.getString("prompt-type"))) {
             return new SelectMultipleCard(this, prompt);
         } else if ("select-time".equals(prompt.getString("prompt-type"))) {
@@ -303,6 +303,12 @@ public class QuestionsActivity extends AppCompatActivity {
                             passes = false;
                         }
                     }
+                } else if ("in".equals(operator)) {
+                    ArrayList<String> selected = (ArrayList<String>) answer;
+
+                    if (selected.contains(value) == false) {
+                        passes = false;
+                    }
                 }
             }
         }
@@ -365,6 +371,12 @@ public class QuestionsActivity extends AppCompatActivity {
                             passes = true;
                         }
                     }
+                } else if ("in".equals(operator)) {
+                    ArrayList<String> selected = (ArrayList<String>) answer;
+
+                    if (selected.contains(value)) {
+                        passes = true;
+                    }
                 }
             }
         }
@@ -381,16 +393,20 @@ public class QuestionsActivity extends AppCompatActivity {
             for (int i = 0; i < prompts.length(); i++) {
                 JSONObject prompt = prompts.getJSONObject(i);
 
-                JSONArray constraints = prompt.getJSONArray("constraints");
+                if (prompt.has("constraints")) {
+                    JSONArray constraints = prompt.getJSONArray("constraints");
 
-                if (prompt.has("constraint-matches") && "any".equals(prompt.getString("constraint-matches"))) {
-                    if (this.evaluateOrConstraints(constraints, this.mAnswers)) {
-                        active.add(prompt.getString("key"));
+                    if (prompt.has("constraint-matches") && "any".equals(prompt.getString("constraint-matches"))) {
+                        if (this.evaluateOrConstraints(constraints, this.mAnswers)) {
+                            active.add(prompt.getString("key"));
+                        }
+                    } else {
+                        if (this.evaluateConstraints(constraints, this.mAnswers)) {
+                            active.add(prompt.getString("key"));
+                        }
                     }
                 } else {
-                    if (this.evaluateConstraints(constraints, this.mAnswers)) {
-                        active.add(prompt.getString("key"));
-                    }
+                    active.add(prompt.getString("key"));
                 }
             }
         } catch (JSONException e) {

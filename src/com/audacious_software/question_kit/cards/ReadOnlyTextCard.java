@@ -17,7 +17,7 @@ public class ReadOnlyTextCard extends QuestionCard {
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {
         TextView textLabel = parent.findViewById(R.id.text_label);
 
-        textLabel.setText(prompt.getString("text"));
+        textLabel.setText(this.getLocalizedValue(prompt, "text"));
     }
 
     protected int getCardLayoutResource() {
