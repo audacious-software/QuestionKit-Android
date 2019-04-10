@@ -23,10 +23,10 @@ public class MultiLineTextInputCard extends QuestionCard {
 
         TextInputLayout layout = parent.findViewById(R.id.answer_layout);
 
-        promptLabel.setText(prompt.getString("prompt"));
+        promptLabel.setText(this.getLocalizedValue(prompt, "prompt"));
 
         if (prompt.has("hint")) {
-            layout.setHint(prompt.getString("hint"));
+            layout.setHint(this.getLocalizedValue(prompt, "hint"));
         }
 
         this.setupChangeListener(parent);

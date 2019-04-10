@@ -25,7 +25,8 @@ public class SelectMultipleCard extends QuestionCard {
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {
         TextView promptLabel = parent.findViewById(R.id.prompt_label);
-        promptLabel.setText(prompt.getString("prompt"));
+
+        promptLabel.setText(this.getLocalizedValue(prompt, "prompt"));
 
         LinearLayoutCompat checkBoxes = this.findViewById(R.id.checkbox_group);
 
@@ -40,7 +41,7 @@ public class SelectMultipleCard extends QuestionCard {
                 final String value = option.getString("value");
 
                 CheckBox checkBox = new CheckBox(this.getActivity());
-                checkBox.setText(option.getString("label"));
+                checkBox.setText(this.getLocalizedValue(option, "label"));
 
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override

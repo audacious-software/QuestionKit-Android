@@ -2,6 +2,7 @@ package com.audacious_software.question_kit.cards;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,7 +15,11 @@ import com.audacious_software.question_kit.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 import androidx.cardview.widget.CardView;
+import androidx.core.os.ConfigurationCompat;
+import androidx.core.os.LocaleListCompat;
 
 public class QuestionCard extends FrameLayout {
     private final CardView mCardView;
@@ -96,5 +101,23 @@ public class QuestionCard extends FrameLayout {
 
     protected Activity getActivity() {
         return this.mActivity;
+    }
+
+    protected String getLocalizedValue(JSONObject prompt, String key) throws JSONException {
+        if (prompt.has(key)) {
+            LocaleListCompat locales = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration());
+
+            JSONObject holder = prompt.getJSONObject(key);
+
+            for (int i = 0; i < locales.size(); i++) {
+                String languageCode = locales.get(i).getLanguage();
+
+                if (holder.has(languageCode)) {
+                    return holder.getString(languageCode);
+                }
+            }
+        }
+
+        return key;
     }
 }

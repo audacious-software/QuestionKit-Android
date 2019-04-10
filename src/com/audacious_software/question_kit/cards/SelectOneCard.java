@@ -19,7 +19,7 @@ public class SelectOneCard extends QuestionCard {
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {
         TextView promptLabel = parent.findViewById(R.id.prompt_label);
-        promptLabel.setText(prompt.getString("prompt"));
+        promptLabel.setText(this.getLocalizedValue(prompt, "prompt"));
 
         RadioGroup radios = this.findViewById(R.id.radio_group);
 
@@ -33,7 +33,7 @@ public class SelectOneCard extends QuestionCard {
 
                 RadioButton radio = new RadioButton(this.getActivity());
                 radio.setId(i);
-                radio.setText(option.getString("label"));
+                radio.setText(this.getLocalizedValue(option, "label"));
 
                 radios.addView(radio, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
