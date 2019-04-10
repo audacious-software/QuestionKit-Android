@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.audacious_software.question_kit.cards.DateRangeCard;
+import com.audacious_software.question_kit.cards.ReadOnlyLocationCard;
 import com.audacious_software.question_kit.cards.MultiLineTextInputCard;
 import com.audacious_software.question_kit.cards.QuestionCard;
 import com.audacious_software.question_kit.cards.ReadOnlyTextCard;
@@ -60,7 +60,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         final QuestionsActivity me = this;
 
-        final String jsonDefinition = this.getIntent().getStringExtra(QuestionsActivity.JSON_DEFINITION);
+        final String jsonDefinition = this.getQuestions();
 
         this.mRootLayout = this.findViewById(R.id.questions_root);
 
@@ -93,6 +93,10 @@ public class QuestionsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    protected String getQuestions() {
+        return this.getIntent().getStringExtra(QuestionsActivity.JSON_DEFINITION);
     }
 
     private void refreshCards() {
@@ -163,6 +167,8 @@ public class QuestionsActivity extends AppCompatActivity {
             return new SelectTimeCard(this, prompt);
         } else if ("read-only-text".equals(prompt.getString("prompt-type"))) {
             return new ReadOnlyTextCard(this, prompt);
+        } else if ("read-only-location".equals(prompt.getString("prompt-type"))) {
+            return new ReadOnlyLocationCard(this, prompt);
         }
 
         return new QuestionCard(this, prompt);

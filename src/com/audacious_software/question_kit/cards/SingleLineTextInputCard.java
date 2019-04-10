@@ -20,7 +20,7 @@ public class SingleLineTextInputCard extends MultiLineTextInputCard {
 
         TextInputEditText field = parent.findViewById(R.id.answer_field);
 
-        field.setSingleLine(true);
+        field.setMaxLines(1);
     }
 }
 
