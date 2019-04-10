@@ -88,8 +88,6 @@ public class QuestionsActivity extends AppCompatActivity {
 
         this.mHandler = new Handler(Looper.getMainLooper());
 
-        Log.e("ENVIRO", "JSON QUESTION DEF: " + jsonDefinition);
-
         try {
             this.updateQuestions(new JSONObject(jsonDefinition));
         } catch (JSONException e) {
