@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
@@ -27,6 +28,8 @@ import java.util.Date;
 public class SelectTimeCard extends SingleLineTextInputCard {
     private boolean mWaitingForTouch = true;
 
+    private boolean mDisplayingPicker = false;
+
     public SelectTimeCard(QuestionsActivity activity, JSONObject prompt) {
         super(activity, prompt);
     }
@@ -35,10 +38,65 @@ public class SelectTimeCard extends SingleLineTextInputCard {
     protected void initializeView(final JSONObject prompt, final ViewGroup parent) throws JSONException {
         super.initializeView(prompt, parent);
 
-        TextInputEditText field = parent.findViewById(R.id.answer_field);
-
         final SelectTimeCard me = this;
 
+        final TextInputEditText field = parent.findViewById(R.id.answer_field);
+
+        field.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean focused) {
+                if (focused && me.mDisplayingPicker == false) {
+                    me.mDisplayingPicker = true;
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            int hour = 0;
+                            int minute = 0;
+
+                            if (prompt.has("default")) {
+
+                                try {
+                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
+                                    Date date = format.parse(prompt.getString("default"));
+
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.setTime(date);
+
+                                    hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                    minute = calendar.get(Calendar.MINUTE);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            TimePickerDialog picker = new TimePickerDialog(parent.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                                @Override
+                                public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                    me.setSelectedTime(hour, minute);
+
+                                }
+                            }, hour, minute, DateFormat.is24HourFormat(parent.getContext()));
+
+                            picker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialogInterface) {
+                                    me.mDisplayingPicker = false;
+                                }
+                            });
+                             picker.show();
+                        }
+                    }, 100);
+                }
+            }
+        });
+
+/*
         field.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -89,6 +147,7 @@ public class SelectTimeCard extends SingleLineTextInputCard {
                 return true;
             }
         });
+        */
     }
 
     protected void setupChangeListener(ViewGroup parent) {
@@ -109,6 +168,12 @@ public class SelectTimeCard extends SingleLineTextInputCard {
 
         field.setText(format.format(calendar.getTime()));
 
-        this.updateValue(this.key(), hour + ":" + minute);
+        String minuteString = "" + minute;
+
+        if (minute < 10) {
+            minuteString = "0" + minute;
+        }
+
+        this.updateValue(this.key(), hour + ":" + minuteString);
     }
 }

@@ -1,6 +1,7 @@
 package com.audacious_software.question_kit;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,8 @@ import java.util.Map;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.os.ConfigurationCompat;
+import androidx.core.os.LocaleListCompat;
 
 public class QuestionsActivity extends AppCompatActivity {
     private FloatingActionButton mCompleteButton;
@@ -440,5 +443,25 @@ public class QuestionsActivity extends AppCompatActivity {
 
     protected void setCompleteButtonIcon(int imageResource) {
         this.mCompleteButton.setImageDrawable(ContextCompat.getDrawable(this, imageResource));
+    }
+
+    public JSONObject addLocalizedText(JSONObject existingObject, String code, String text) {
+        if (existingObject == null) {
+            existingObject = new JSONObject();
+        }
+
+        if (code == null) {
+            LocaleListCompat locales = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration());
+
+            code = locales.get(0).getLanguage();
+        }
+
+        try {
+            existingObject.put(code, text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return existingObject;
     }
 }
