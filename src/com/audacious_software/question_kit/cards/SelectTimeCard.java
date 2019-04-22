@@ -15,6 +15,7 @@ import android.widget.TimePicker;
 
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
+import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class SelectTimeCard extends SingleLineTextInputCard {
 
         final SelectTimeCard me = this;
 
-        final TextInputEditText field = parent.findViewById(R.id.answer_field);
+        final TextInputAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
 
         field.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -155,7 +156,7 @@ public class SelectTimeCard extends SingleLineTextInputCard {
     }
 
     public void setSelectedTime(int hour, int minute) {
-        TextInputEditText field = this.findViewById(R.id.answer_field);
+        TextInputAutoCompleteTextView field = this.findViewById(R.id.answer_field);
         Context context = this.getContext();
 
         java.text.DateFormat format = DateFormat.getTimeFormat(context);

@@ -1,17 +1,22 @@
 package com.audacious_software.question_kit.cards;
 
+import android.app.Activity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
+import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class MultiLineTextInputCard extends QuestionCard {
     public MultiLineTextInputCard(QuestionsActivity activity, JSONObject prompt) {
@@ -30,12 +35,31 @@ public class MultiLineTextInputCard extends QuestionCard {
         }
 
         this.setupChangeListener(parent);
+
+        final Activity activity = this.getActivity();
+
+        if (activity instanceof QuestionCard.QuestionAutofillSuggestionProvider) {
+            QuestionCard.QuestionAutofillSuggestionProvider provider = (QuestionCard.QuestionAutofillSuggestionProvider) activity;
+
+            final TextInputAutoCompleteTextView textView = parent.findViewById(R.id.answer_field);
+            textView.setThreshold(1);
+
+            provider.fetchSuggestions(prompt.getString("key"), new QuestionAutofillSuggestionResults() {
+                @Override
+                public void onSuggestions(List<String> suggestions) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, suggestions);
+
+                    textView.setAdapter(adapter);
+                }
+            });
+        }
+
     }
 
     protected void setupChangeListener(ViewGroup parent) {
         final MultiLineTextInputCard me = this;
 
-        TextInputEditText field = parent.findViewById(R.id.answer_field);
+        TextInputAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
 
         field.addTextChangedListener(new TextWatcher() {
             @Override

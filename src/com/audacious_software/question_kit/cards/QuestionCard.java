@@ -15,6 +15,8 @@ import com.audacious_software.question_kit.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.cardview.widget.CardView;
@@ -120,4 +122,13 @@ public class QuestionCard extends FrameLayout {
 
         return key;
     }
+
+    public abstract class QuestionAutofillSuggestionResults {
+        public abstract void onSuggestions(List<String> suggestions);
+    }
+
+    public interface QuestionAutofillSuggestionProvider {
+       void fetchSuggestions(String key, QuestionAutofillSuggestionResults resultsHandler);
+    }
+
 }

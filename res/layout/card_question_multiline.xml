@@ -25,10 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
+            <com.audacious_software.question_kit.views.TextInputAutoCompleteTextView
                 android:id="@+id/answer_field"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.cardview.widget.CardView>
