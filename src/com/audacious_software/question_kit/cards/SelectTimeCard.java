@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class SelectTimeCard extends SingleLineTextInputCard {
     private boolean mWaitingForTouch = true;
@@ -60,7 +61,7 @@ public class SelectTimeCard extends SingleLineTextInputCard {
                             if (prompt.has("default")) {
 
                                 try {
-                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
                                     Date date = format.parse(prompt.getString("default"));
 
