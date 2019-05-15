@@ -53,7 +53,16 @@ public class MultiLineTextInputCard extends QuestionCard {
                 }
             });
         }
+    }
 
+    public String description() {
+        try {
+            return this.getLocalizedValue(this.getPrompt(), "prompt");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return super.description();
     }
 
     protected void setupChangeListener(ViewGroup parent) {

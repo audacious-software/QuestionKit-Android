@@ -221,7 +221,19 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
-    private boolean questionsComplete() {
+    protected String descriptionForKey(String key) {
+        for (QuestionCard card : this.mQuestionCards) {
+            if (card.key().equals(key)) {
+                return card.description();
+            }
+        }
+
+        return key;
+    }
+
+    public List<String> incompleteQuestions() {
+        ArrayList<String> incomplete = new ArrayList<>();
+
         try {
             JSONArray completedActions = this.mDefinition.getJSONArray("completed-actions");
 
@@ -230,9 +242,9 @@ public class QuestionsActivity extends AppCompatActivity {
 
                 JSONArray constraints = action.getJSONArray("constraints");
 
-                boolean passes = this.evaluateConstraints(constraints, this.mAnswers);
+                List<JSONObject> pendingConstraints = this.pendingConstraints(constraints, this.mAnswers);
 
-                if (passes) {
+                if (pendingConstraints.size() == 0) {
                     JSONArray actions = action.getJSONArray("actions");
 
                     for (int j = 0; j < actions.length(); j++) {
@@ -240,10 +252,18 @@ public class QuestionsActivity extends AppCompatActivity {
                             String actionName = actions.getJSONObject(i).getString("action");
 
                             if ("complete".equals(actionName)) {
-                                return true;
+                                return new ArrayList<>();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+                    }
+                } else {
+                    for (JSONObject constraint : pendingConstraints) {
+                        String key = constraint.getString("key");
+
+                        if (incomplete.contains(key) == false) {
+                            incomplete.add(key);
                         }
                     }
                 }
@@ -252,11 +272,19 @@ public class QuestionsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return false;
+        return incomplete;
+    }
+
+    private boolean questionsComplete() {
+        return this.incompleteQuestions().size() == 0;
     }
 
     private boolean evaluateConstraints(JSONArray constraints, HashMap<String,Object> answers) throws JSONException {
-        boolean passes = true;
+        return this.pendingConstraints(constraints, answers).size() == 0;
+    }
+
+    private List<JSONObject> pendingConstraints(JSONArray constraints, HashMap<String,Object> answers) throws JSONException {
+        List<JSONObject> pending = new ArrayList<JSONObject>();
 
         for (int j = 0; j < constraints.length(); j++) {
             JSONObject constraint = constraints.getJSONObject(j);
@@ -268,19 +296,27 @@ public class QuestionsActivity extends AppCompatActivity {
             Object answer = this.mAnswers.get(key);
 
             if (answer == null) {
-                passes = false;
+                if (pending.contains(constraint) == false) {
+                    pending.add(constraint);
+                }
             } else {
                 if ("=".equals(operator) && answer.equals(value) == false) {
-                    passes = false;
+                    if (pending.contains(constraint) == false) {
+                        pending.add(constraint);
+                    }
                 } else if ("!=".equals(operator) && answer.equals(value)) {
-                    passes = false;
+                    if (pending.contains(constraint) == false) {
+                        pending.add(constraint);
+                    }
                 } else if ("<".equals(operator)) {
                     if (value instanceof Comparable && answer instanceof Comparable) {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
                         if (answerComparable.compareTo(valueComparable) > -1) {
-                            passes = false;
+                            if (pending.contains(constraint) == false) {
+                                pending.add(constraint);
+                            }
                         }
                     }
                 } else if ("<=".equals(operator)) {
@@ -289,7 +325,9 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable answerComparable = (Comparable) answer;
 
                         if (answerComparable.compareTo(valueComparable) > 0) {
-                            passes = false;
+                            if (pending.contains(constraint) == false) {
+                                pending.add(constraint);
+                            }
                         }
                     }
                 } else if (">".equals(operator)) {
@@ -298,7 +336,9 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable answerComparable = (Comparable) answer;
 
                         if (answerComparable.compareTo(valueComparable) < 1) {
-                            passes = false;
+                            if (pending.contains(constraint) == false) {
+                                pending.add(constraint);
+                            }
                         }
                     }
                 } else if (">=".equals(operator)) {
@@ -307,20 +347,24 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable answerComparable = (Comparable) answer;
 
                         if (answerComparable.compareTo(valueComparable) < 0) {
-                            passes = false;
+                            if (pending.contains(constraint) == false) {
+                                pending.add(constraint);
+                            }
                         }
                     }
                 } else if ("in".equals(operator)) {
                     ArrayList<String> selected = (ArrayList<String>) answer;
 
                     if (selected.contains(value) == false) {
-                        passes = false;
+                        if (pending.contains(constraint) == false) {
+                            pending.add(constraint);
+                        }
                     }
                 }
             }
         }
 
-        return passes;
+        return pending;
     }
 
     private boolean evaluateOrConstraints(JSONArray constraints, HashMap<String,Object> answers) throws JSONException {

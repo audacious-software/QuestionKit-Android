@@ -61,6 +61,16 @@ public class SelectMultipleCard extends QuestionCard {
         }
     }
 
+    public String description() {
+        try {
+            return this.getLocalizedValue(this.getPrompt(), "prompt");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return super.description();
+    }
+
     protected int getCardLayoutResource() {
         return R.layout.card_question_select_multiple;
     }

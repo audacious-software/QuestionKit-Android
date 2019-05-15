@@ -123,6 +123,14 @@ public class QuestionCard extends FrameLayout {
         return key;
     }
 
+    public String description() {
+        return this.key();
+    }
+
+    protected JSONObject getPrompt() {
+        return this.mPrompt;
+    }
+
     public abstract class QuestionAutofillSuggestionResults {
         public abstract void onSuggestions(List<String> suggestions);
     }
