@@ -53,10 +53,14 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private ArrayList <QuestionsUpdatedListener> mQuestionListeners = new ArrayList<>();
 
+    public int layoutResource() {
+        return R.layout.activity_question;
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.setContentView(R.layout.activity_question);
+        this.setContentView(this.layoutResource());
 
         ActionBar actionbar = this.getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
