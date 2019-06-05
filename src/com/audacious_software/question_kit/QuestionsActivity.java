@@ -106,6 +106,18 @@ public class QuestionsActivity extends AppCompatActivity {
         return this.getIntent().getStringExtra(QuestionsActivity.JSON_DEFINITION);
     }
 
+    public void reloadQuestions() {
+        final String jsonDefinition = this.getQuestions();
+
+        try {
+            this.updateQuestions(new JSONObject(jsonDefinition));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        this.refreshCards();
+    }
+
     private void refreshCards() {
         List<String> activePrompts = this.fetchActivePrompts();
 
