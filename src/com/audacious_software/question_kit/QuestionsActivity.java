@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.os.ConfigurationCompat;
@@ -53,6 +54,10 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private ArrayList <QuestionsUpdatedListener> mQuestionListeners = new ArrayList<>();
 
+    private String mLoadingTitle = null;
+    private String mLoadingMessage = null;
+    private AlertDialog mLoadingDialog = null;
+
     public int layoutResource() {
         return R.layout.activity_question;
     }
@@ -65,23 +70,11 @@ public class QuestionsActivity extends AppCompatActivity {
         ActionBar actionbar = this.getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
 
-        final QuestionsActivity me = this;
-
-        final String jsonDefinition = this.getQuestions();
-
         this.mRootLayout = this.findViewById(R.id.questions_root);
 
-        this.mCompleteButton = this.findViewById(R.id.complete_button);
+        final QuestionsActivity me = this;
 
-        this.mCompleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (QuestionsUpdatedListener listener : me.mQuestionListeners) {
-                    listener.onCompleted(jsonDefinition, me.mAnswers);
-                }
-            }
-        });
-
+        this.mCompleteButton = me.findViewById(R.id.complete_button);
         this.mCompleteButton.hide();
 
         this.mAnswers = new HashMap<>();
@@ -94,16 +87,78 @@ public class QuestionsActivity extends AppCompatActivity {
         };
 
         this.mHandler = new Handler(Looper.getMainLooper());
+    }
 
-        try {
-            this.updateQuestions(new JSONObject(jsonDefinition));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    protected void onResume() {
+        super.onResume();
+
+        this.reloadQuestions();
+    }
+
+    protected void setLoadingTitle(String title) {
+        this.mLoadingTitle = title;
+    }
+
+    protected void setLoadingMessage(String message) {
+        this.mLoadingMessage = message;
     }
 
     protected String getQuestions() {
         return this.getIntent().getStringExtra(QuestionsActivity.JSON_DEFINITION);
+    }
+
+    public void reloadQuestions() {
+        final QuestionsActivity me = this;
+
+        if (this.mLoadingTitle != null && this.mLoadingMessage != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle(this.mLoadingTitle);
+            builder.setMessage(this.mLoadingMessage);
+            builder.setCancelable(false);
+
+            this.mLoadingDialog = builder.create();
+            this.mLoadingDialog.show();
+        } else {
+            this.mLoadingDialog = null;
+        }
+
+        Thread loaderThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String jsonDefinition = me.getQuestions();
+
+                me.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            me.mCompleteButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    for (QuestionsUpdatedListener listener : me.mQuestionListeners) {
+                                        listener.onCompleted(jsonDefinition, me.mAnswers);
+                                    }
+                                }
+                            });
+
+                            me.updateQuestions(new JSONObject(jsonDefinition));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        me.refreshCards();
+
+                        if (me.mLoadingDialog != null) {
+                            me.mLoadingDialog.dismiss();
+                            me.mLoadingDialog = null;
+                        }
+                    }
+                });
+            }
+        });
+
+        loaderThread.start();
     }
 
     private void refreshCards() {
