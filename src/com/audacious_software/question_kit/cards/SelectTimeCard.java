@@ -1,14 +1,12 @@
 package com.audacious_software.question_kit.cards;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
@@ -16,7 +14,6 @@ import android.widget.TimePicker;
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
 import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;

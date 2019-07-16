@@ -40,7 +40,7 @@ public class QuestionsActivity extends AppCompatActivity {
     public interface QuestionsUpdatedListener {
         void onQuestionsUpdated(Map<String, Object> answers, boolean isComplete);
         void onCompleted(String questions, Map<String, Object> answers);
-    };
+    }
 
     public static final String JSON_DEFINITION = "com.audacious_software.question_kit.QuestionsActivity.JSON_DEFINITION";
     private LinearLayout mRootLayout = null;
@@ -288,7 +288,7 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private List<JSONObject> pendingConstraints(JSONArray constraints, HashMap<String,Object> answers) throws JSONException {
-        List<JSONObject> pending = new ArrayList<JSONObject>();
+        List<JSONObject> pending = new ArrayList<>();
 
         for (int j = 0; j < constraints.length(); j++) {
             JSONObject constraint = constraints.getJSONObject(j);
@@ -317,6 +317,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) > -1) {
                             if (pending.contains(constraint) == false) {
                                 pending.add(constraint);
@@ -328,6 +329,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) > 0) {
                             if (pending.contains(constraint) == false) {
                                 pending.add(constraint);
@@ -339,6 +341,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) < 1) {
                             if (pending.contains(constraint) == false) {
                                 pending.add(constraint);
@@ -350,6 +353,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) < 0) {
                             if (pending.contains(constraint) == false) {
                                 pending.add(constraint);
@@ -357,6 +361,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         }
                     }
                 } else if ("in".equals(operator)) {
+                    @SuppressWarnings("unchecked")
                     ArrayList<String> selected = (ArrayList<String>) answer;
 
                     if (selected.contains(value) == false) {
@@ -383,9 +388,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
             Object answer = this.mAnswers.get(key);
 
-            if (answer == null) {
-
-            } else {
+            if (answer != null) {
                 if ("=".equals(operator) && answer.equals(value)) {
                     passes = true;
                 } else if ("!=".equals(operator) && answer.equals(value) == false) {
@@ -395,6 +398,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) < 1) {
                             passes = true;
                         }
@@ -404,6 +408,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) <= 0) {
                             passes = true;
                         }
@@ -413,6 +418,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) > -1) {
                             passes = true;
                         }
@@ -422,11 +428,13 @@ public class QuestionsActivity extends AppCompatActivity {
                         Comparable valueComparable = (Comparable) value;
                         Comparable answerComparable = (Comparable) answer;
 
+                        //noinspection unchecked
                         if (answerComparable.compareTo(valueComparable) >= 0) {
                             passes = true;
                         }
                     }
                 } else if ("in".equals(operator)) {
+                    @SuppressWarnings("unchecked")
                     ArrayList<String> selected = (ArrayList<String>) answer;
 
                     if (selected.contains(value)) {

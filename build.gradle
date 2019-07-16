@@ -13,7 +13,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
     }
 }
 
@@ -42,7 +42,6 @@ android {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
-//            resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
@@ -53,20 +52,17 @@ android {
     }
 
     dependencies {
-        api fileTree(dir: 'libs', include: ['*.jar'])
-        // testCompile 'junit:junit:4.12'
-        api 'androidx.appcompat:appcompat:1.0.2'
-        api 'androidx.recyclerview:recyclerview:1.0.0'
-        api 'androidx.media:media:1.0.1'
-        api 'androidx.legacy:legacy-support-v4:1.0.0'
-        api 'androidx.cardview:cardview:1.0.0'
-        api 'androidx.browser:browser:1.0.0'
-        api 'com.google.android.material:material:1.0.0'
-        api 'com.google.android.gms:play-services-maps:16.1.0'
-        api 'com.google.maps.android:android-maps-utils:0.4'
-        api 'com.prolificinteractive:material-calendarview:1.4.3'
-        api 'commons-io:commons-io:2.6'
-        api 'commons-codec:commons-codec:1.10'
-        api 'org.apache.commons:commons-lang3:3.4'
+        implementation 'androidx.appcompat:appcompat:1.0.2'
+        implementation 'androidx.recyclerview:recyclerview:1.0.0'
+        implementation 'androidx.media:media:1.0.1'
+        implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+        implementation 'androidx.cardview:cardview:1.0.0'
+        implementation 'androidx.browser:browser:1.0.0'
+        implementation 'com.google.android.material:material:1.0.0'
+        implementation 'com.google.android.gms:play-services-maps:16.1.0'
+        implementation 'com.google.maps.android:android-maps-utils:0.5'
+        implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+        implementation 'commons-io:commons-io:2.6'
+        implementation 'org.apache.commons:commons-lang3:3.9'
     }
 }

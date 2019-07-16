@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
 import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;

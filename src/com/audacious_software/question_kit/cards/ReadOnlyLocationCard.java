@@ -1,15 +1,9 @@
 package com.audacious_software.question_kit.cards;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
@@ -17,19 +11,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.ui.IconGenerator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.core.content.res.ResourcesCompat;
 
 public class ReadOnlyLocationCard extends ReadOnlyTextCard {
     public ReadOnlyLocationCard(QuestionsActivity activity, JSONObject prompt) {

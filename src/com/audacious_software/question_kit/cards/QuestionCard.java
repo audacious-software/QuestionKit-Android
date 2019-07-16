@@ -15,9 +15,7 @@ import com.audacious_software.question_kit.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.os.ConfigurationCompat;
