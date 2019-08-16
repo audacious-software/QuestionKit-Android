@@ -37,10 +37,11 @@ public class MultiLineTextInputCard extends QuestionCard {
 
         final Activity activity = this.getActivity();
 
+        final TextInputAutoCompleteTextView textView = parent.findViewById(R.id.answer_field);
+
         if (activity instanceof QuestionCard.QuestionAutofillSuggestionProvider) {
             QuestionCard.QuestionAutofillSuggestionProvider provider = (QuestionCard.QuestionAutofillSuggestionProvider) activity;
 
-            final TextInputAutoCompleteTextView textView = parent.findViewById(R.id.answer_field);
             textView.setThreshold(1);
 
             provider.fetchSuggestions(prompt.getString("key"), new QuestionAutofillSuggestionResults() {
@@ -51,6 +52,10 @@ public class MultiLineTextInputCard extends QuestionCard {
                     textView.setAdapter(adapter);
                 }
             });
+        }
+
+        if (prompt.has("value")) {
+            textView.setText(prompt.getString("value"));
         }
     }
 

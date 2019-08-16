@@ -293,6 +293,10 @@ public class QuestionsActivity extends AppCompatActivity {
     public List<String> incompleteQuestions() {
         ArrayList<String> incomplete = new ArrayList<>();
 
+        if (this.mDefinition == null) {
+            return incomplete;
+        }
+
         try {
             JSONArray completedActions = this.mDefinition.getJSONArray("completed-actions");
 

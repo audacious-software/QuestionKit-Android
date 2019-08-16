@@ -28,12 +28,18 @@ public class SelectOneCard extends QuestionCard {
         if (prompt.has("options")) {
             final JSONArray options = prompt.getJSONArray("options");
 
+            RadioButton preselect = null;
+
             for (int i = 0; i < options.length(); i++) {
                 JSONObject option = options.getJSONObject(i);
 
                 RadioButton radio = new RadioButton(this.getActivity());
                 radio.setId(i);
                 radio.setText(this.getLocalizedValue(option, "label"));
+
+                if (prompt.has("value") && radio.getText().equals(prompt.getString("value"))) {
+                    preselect = radio;
+                }
 
                 radios.addView(radio, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
@@ -52,6 +58,10 @@ public class SelectOneCard extends QuestionCard {
                     }
                 }
             });
+
+            if (preselect != null) {
+                preselect.toggle();
+            }
         }
     }
 
