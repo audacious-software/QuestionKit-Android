@@ -240,6 +240,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
         if (requestCode == DateRangeActivity.SELECT_DATE_RANGE) {
             String key = data.getStringExtra(DateRangeActivity.QUESTION_KEY);
 
