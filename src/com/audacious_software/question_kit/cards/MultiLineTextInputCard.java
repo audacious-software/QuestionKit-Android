@@ -18,8 +18,8 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MultiLineTextInputCard extends QuestionCard {
-    public MultiLineTextInputCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public MultiLineTextInputCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {

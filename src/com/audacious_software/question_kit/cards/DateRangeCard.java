@@ -26,8 +26,8 @@ import java.util.List;
 public class DateRangeCard extends SingleLineTextInputCard {
     private boolean mWaitingForTouch = true;
 
-    public DateRangeCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public DateRangeCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     @SuppressLint("ClickableViewAccessibility")

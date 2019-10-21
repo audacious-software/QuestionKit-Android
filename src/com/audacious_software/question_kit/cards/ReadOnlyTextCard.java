@@ -10,8 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ReadOnlyTextCard extends QuestionCard {
-    public ReadOnlyTextCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public ReadOnlyTextCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {

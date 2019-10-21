@@ -19,8 +19,8 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 public class SelectMultipleCard extends QuestionCard {
     private ArrayList<String> mSelected = new ArrayList<>();
 
-    public SelectMultipleCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public SelectMultipleCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {

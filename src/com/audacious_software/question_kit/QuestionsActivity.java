@@ -38,6 +38,8 @@ import androidx.core.os.LocaleListCompat;
 public class QuestionsActivity extends AppCompatActivity {
     private FloatingActionButton mCompleteButton;
 
+    private String mDefaultLanguage = "en";
+
     public interface QuestionsUpdatedListener {
         void onQuestionsUpdated(Map<String, Object> answers, boolean isComplete);
         void onCompleted(String questions, Map<String, Object> answers);
@@ -191,6 +193,12 @@ public class QuestionsActivity extends AppCompatActivity {
         this.mRootLayout.removeAllViews();
         this.mQuestionCards.clear();
 
+        if (this.mDefinition.has("default-language")) {
+            this.mDefaultLanguage = this.mDefinition.getString("default-language");
+        } else {
+            this.mDefaultLanguage = "en";
+        }
+
         JSONArray prompts = this.mDefinition.getJSONArray("prompts");
 
         for (int i = 0; i < prompts.length(); i++) {
@@ -214,24 +222,24 @@ public class QuestionsActivity extends AppCompatActivity {
 
     public QuestionCard cardForPrompt(JSONObject prompt) throws JSONException {
         if ("multi-line".equals(prompt.getString("prompt-type"))) {
-            return new MultiLineTextInputCard(this, prompt);
+            return new MultiLineTextInputCard(this, prompt, this.mDefaultLanguage);
         } else if ("date-range".equals(prompt.getString("prompt-type"))) {
-            return new DateRangeCard(this, prompt);
+            return new DateRangeCard(this, prompt, this.mDefaultLanguage);
         } else if ("single-line".equals(prompt.getString("prompt-type"))) {
-            return new SingleLineTextInputCard(this, prompt);
+            return new SingleLineTextInputCard(this, prompt, this.mDefaultLanguage);
         } else if ("select-one".equals(prompt.getString("prompt-type"))) {
-            return new SelectOneCard(this, prompt);
+            return new SelectOneCard(this, prompt, this.mDefaultLanguage);
         } else if ("select-multiple".equals(prompt.getString("prompt-type"))) {
-            return new SelectMultipleCard(this, prompt);
+            return new SelectMultipleCard(this, prompt, this.mDefaultLanguage);
         } else if ("select-time".equals(prompt.getString("prompt-type"))) {
-            return new SelectTimeCard(this, prompt);
+            return new SelectTimeCard(this, prompt, this.mDefaultLanguage);
         } else if ("read-only-text".equals(prompt.getString("prompt-type"))) {
-            return new ReadOnlyTextCard(this, prompt);
+            return new ReadOnlyTextCard(this, prompt, this.mDefaultLanguage);
         } else if ("read-only-location".equals(prompt.getString("prompt-type"))) {
-            return new ReadOnlyLocationCard(this, prompt);
+            return new ReadOnlyLocationCard(this, prompt, this.mDefaultLanguage);
         }
 
-        return new QuestionCard(this, prompt);
+        return new QuestionCard(this, prompt, this.mDefaultLanguage);
     }
 
     private void updateActivityTitle(String title) {

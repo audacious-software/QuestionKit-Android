@@ -25,13 +25,16 @@ public class QuestionCard extends FrameLayout {
     private final CardView mCardView;
     private final JSONObject mPrompt;
     private final QuestionsActivity mActivity;
+    private String mDefaultLanguage = "en";
 
-    public QuestionCard(QuestionsActivity activity, JSONObject prompt) {
+    public QuestionCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
         super(activity);
         
         this.mActivity = activity;
 
         this.mPrompt = prompt;
+
+        this.mDefaultLanguage = defaultLanguage;
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         this.setLayoutParams(params);
@@ -115,6 +118,10 @@ public class QuestionCard extends FrameLayout {
                 if (holder.has(languageCode)) {
                     return holder.getString(languageCode);
                 }
+            }
+
+            if (holder.has(this.mDefaultLanguage)) {
+                return holder.getString(this.mDefaultLanguage);
             }
         }
 

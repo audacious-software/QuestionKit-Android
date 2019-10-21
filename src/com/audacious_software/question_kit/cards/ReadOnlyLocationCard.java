@@ -21,8 +21,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ReadOnlyLocationCard extends ReadOnlyTextCard {
-    public ReadOnlyLocationCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public ReadOnlyLocationCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     protected void initializeView(JSONObject prompt, ViewGroup parent) throws JSONException {

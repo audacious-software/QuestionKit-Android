@@ -29,8 +29,8 @@ public class SelectTimeCard extends SingleLineTextInputCard {
 
     private boolean mDisplayingPicker = false;
 
-    public SelectTimeCard(QuestionsActivity activity, JSONObject prompt) {
-        super(activity, prompt);
+    public SelectTimeCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
+        super(activity, prompt, defaultLanguage);
     }
 
     @SuppressLint("ClickableViewAccessibility")
