@@ -12,6 +12,7 @@ import com.audacious_software.question_kit.cards.DateRangeCard;
 import com.audacious_software.question_kit.cards.ReadOnlyLocationCard;
 import com.audacious_software.question_kit.cards.MultiLineTextInputCard;
 import com.audacious_software.question_kit.cards.QuestionCard;
+import com.audacious_software.question_kit.cards.ReadOnlyMapboxLocationCard;
 import com.audacious_software.question_kit.cards.ReadOnlyTextCard;
 import com.audacious_software.question_kit.cards.SelectMultipleCard;
 import com.audacious_software.question_kit.cards.SelectOneCard;
@@ -236,7 +237,17 @@ public class QuestionsActivity extends AppCompatActivity {
         } else if ("read-only-text".equals(prompt.getString("prompt-type"))) {
             return new ReadOnlyTextCard(this, prompt, this.mDefaultLanguage);
         } else if ("read-only-location".equals(prompt.getString("prompt-type"))) {
-            return new ReadOnlyLocationCard(this, prompt, this.mDefaultLanguage);
+            boolean useMapbox = false;
+
+            if (prompt.has("use-mapbox")) {
+                useMapbox = prompt.getBoolean("use-mapbox");
+            }
+
+            if (useMapbox) {
+                return new ReadOnlyMapboxLocationCard(this, prompt, this.mDefaultLanguage);
+            } else {
+                return new ReadOnlyLocationCard(this, prompt, this.mDefaultLanguage);
+            }
         }
 
         return new QuestionCard(this, prompt, this.mDefaultLanguage);

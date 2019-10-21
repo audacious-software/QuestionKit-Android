@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapbox_map_view"
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:background="#757575" />

@@ -65,5 +65,6 @@ android {
         implementation 'com.prolificinteractive:material-calendarview:1.4.3'
         implementation 'commons-io:commons-io:2.6'
         implementation 'org.apache.commons:commons-lang3:3.9'
+        implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'
     }
 }
