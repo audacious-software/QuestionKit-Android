@@ -94,4 +94,20 @@ public class DateRangeCard extends SingleLineTextInputCard {
 
         this.updateValue(this.key(), dates);
     }
+
+    public void updateValue(Object value) {
+        List<Date> dates = (List<Date>) value;
+
+        if (dates.size() > 0) {
+            long start = dates.get(0).getTime();
+
+            long end = start;
+
+            if (dates.size() > 1) {
+                end = dates.get(1).getTime();
+            }
+
+            this.setSelectedRange(start, end);
+        }
+    }
 }

@@ -23,7 +23,7 @@ import androidx.core.os.LocaleListCompat;
 
 public class QuestionCard extends FrameLayout {
     private final CardView mCardView;
-    private final JSONObject mPrompt;
+    protected final JSONObject mPrompt;
     private final QuestionsActivity mActivity;
     private String mDefaultLanguage = "en";
 
@@ -144,4 +144,7 @@ public class QuestionCard extends FrameLayout {
        void fetchSuggestions(String key, QuestionAutofillSuggestionResults resultsHandler);
     }
 
+    public void updateValue(Object value) {
+        // Implement in subclasses.
+    }
 }
