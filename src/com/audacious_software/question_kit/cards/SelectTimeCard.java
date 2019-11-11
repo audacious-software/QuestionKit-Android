@@ -94,59 +94,6 @@ public class SelectTimeCard extends SingleLineTextInputCard {
                 }
             }
         });
-
-/*
-        field.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (me.mWaitingForTouch) {
-                    me.mWaitingForTouch = false;
-
-                    int hour = 0;
-                    int minute = 0;
-
-                    if (prompt.has("default")) {
-
-                        try {
-                            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-
-                            Date date = format.parse(prompt.getString("default"));
-
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(date);
-
-                            hour = calendar.get(Calendar.HOUR_OF_DAY);
-                            minute = calendar.get(Calendar.MINUTE);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    TimePickerDialog picker = new TimePickerDialog(parent.getContext(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                            me.setSelectedTime(hour, minute);
-
-                        }
-                    }, hour, minute, DateFormat.is24HourFormat(parent.getContext()));
-
-                    picker.show();
-
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            me.mWaitingForTouch = true;
-                        }
-                    }, 500);
-                }
-
-                return true;
-            }
-        });
-        */
     }
 
     protected void setupChangeListener(ViewGroup parent) {

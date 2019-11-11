@@ -24,6 +24,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +42,8 @@ import androidx.core.os.ConfigurationCompat;
 import androidx.core.os.LocaleListCompat;
 
 public class QuestionsActivity extends AppCompatActivity {
+    private static final String ANSWERS_BYTES = "com.audacious_software.question_kit.QuestionsActivity.ANSWERS_BYTES";
+
     private FloatingActionButton mCompleteButton;
 
     private String mDefaultLanguage = "en";
@@ -90,12 +97,61 @@ public class QuestionsActivity extends AppCompatActivity {
         };
 
         this.mHandler = new Handler(Looper.getMainLooper());
+
+        this.reloadQuestions();
     }
 
     protected void onResume() {
         super.onResume();
+    }
 
-        this.reloadQuestions();
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        byte[] bytes = null;
+
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+
+        try {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(this.mAnswers);
+            oos.flush();
+
+            bytes = bos.toByteArray();
+
+            oos.close();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        outState.putByteArray(QuestionsActivity.ANSWERS_BYTES, bytes);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState.containsKey(QuestionsActivity.ANSWERS_BYTES)) {
+            byte[] bytes = savedInstanceState.getByteArray(QuestionsActivity.ANSWERS_BYTES);
+
+            Object obj = null;
+            ByteArrayInputStream bis = null;
+            ObjectInputStream ois = null;
+
+            try {
+                bis = new ByteArrayInputStream(bytes);
+                ois = new ObjectInputStream(bis);
+
+                this.mAnswers = (HashMap<String, Object>) ois.readObject();
+
+                ois.close();
+                bis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void setLoadingTitle(String title) {

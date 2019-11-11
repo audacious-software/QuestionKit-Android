@@ -1,6 +1,8 @@
 package com.audacious_software.question_kit.cards;
 
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SelectOneCard extends QuestionCard {
+    private RadioGroup mRadios = null;
+
     public SelectOneCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
         super(activity, prompt, defaultLanguage);
     }
@@ -21,7 +25,7 @@ public class SelectOneCard extends QuestionCard {
         TextView promptLabel = parent.findViewById(R.id.prompt_label);
         promptLabel.setText(this.getLocalizedValue(prompt, "prompt"));
 
-        RadioGroup radios = this.findViewById(R.id.radio_group);
+        this.mRadios = this.findViewById(R.id.radio_group);
 
         final SelectOneCard me = this;
 
@@ -41,10 +45,10 @@ public class SelectOneCard extends QuestionCard {
                     preselect = radio;
                 }
 
-                radios.addView(radio, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                this.mRadios.addView(radio, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
 
-            radios.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            this.mRadios.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                     try {
@@ -77,5 +81,29 @@ public class SelectOneCard extends QuestionCard {
 
     protected int getCardLayoutResource() {
         return R.layout.card_question_select_one;
+    }
+
+    public void updateValue(Object value) {
+        String selected = (String) value;
+
+        try {
+            final JSONArray options = this.mPrompt.getJSONArray("options");
+
+            for (int i = 0; i < options.length(); i++) {
+                JSONObject option = options.getJSONObject(i);
+
+                RadioButton radio = (RadioButton) this.mRadios.getChildAt(i);
+
+                String optionValue = option.getString("value");
+
+                if (selected.equals(optionValue)) {
+                    radio.setChecked(true);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        this.updateValue(this.key(), selected);
     }
 }

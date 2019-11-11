@@ -18,6 +18,8 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MultiLineTextInputCard extends QuestionCard {
+    private TextInputAutoCompleteTextView mTextView = null;
+
     public MultiLineTextInputCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
         super(activity, prompt, defaultLanguage);
     }
@@ -57,6 +59,8 @@ public class MultiLineTextInputCard extends QuestionCard {
         if (prompt.has("value")) {
             textView.setText(prompt.getString("value"));
         }
+
+        this.mTextView = mTextView;
     }
 
     public String description() {
@@ -94,5 +98,13 @@ public class MultiLineTextInputCard extends QuestionCard {
 
     protected int getCardLayoutResource() {
         return R.layout.card_question_multiline;
+    }
+
+    public void updateValue(Object value) {
+        String text  = (String) value;
+
+        this.mTextView.setText(text);
+
+        this.updateValue(this.key(), text);
     }
 }
