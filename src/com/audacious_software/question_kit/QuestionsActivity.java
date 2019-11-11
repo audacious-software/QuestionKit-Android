@@ -135,7 +135,6 @@ public class QuestionsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-
                             me.mCompleteButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -187,10 +186,6 @@ public class QuestionsActivity extends AppCompatActivity {
     private void updateQuestions(JSONObject definition) throws JSONException {
         this.mDefinition = definition;
 
-        if (this.mDefinition.has("name")) {
-            this.updateActivityTitle(this.mDefinition.getString("name"));
-        }
-
         this.mRootLayout.removeAllViews();
         this.mQuestionCards.clear();
 
@@ -198,6 +193,36 @@ public class QuestionsActivity extends AppCompatActivity {
             this.mDefaultLanguage = this.mDefinition.getString("default-language");
         } else {
             this.mDefaultLanguage = "en";
+        }
+
+        if (this.mDefinition.has("name")) {
+            Object name = this.mDefinition.get("name");
+
+            boolean nameFound = false;
+
+            if (name instanceof JSONObject) {
+                JSONObject jsonName = (JSONObject) name;
+
+                LocaleListCompat locales = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration());
+
+                for (int i = 0; i < locales.size() && nameFound == false; i++) {
+                    String languageCode = locales.get(i).getLanguage();
+
+                    if (jsonName.has(languageCode)) {
+                        this.updateActivityTitle(jsonName.getString(languageCode));
+
+                        nameFound = true;
+                    }
+                }
+
+                if (nameFound == false && jsonName.has(this.mDefaultLanguage)) {
+                    this.updateActivityTitle(jsonName.getString(this.mDefaultLanguage));
+                }
+            }
+
+            if (nameFound == false) {
+                this.updateActivityTitle(name.toString());
+            }
         }
 
         JSONArray prompts = this.mDefinition.getJSONArray("prompts");
