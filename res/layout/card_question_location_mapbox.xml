@@ -12,12 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
-
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/mapbox_map_view"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="#757575" />
+            android:layout_height="240dp">
+            <com.mapbox.mapboxsdk.maps.MapView
+                android:id="@+id/mapbox_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#757575" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/style_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp" />
+        </FrameLayout>
 
         <TextView android:id="@+id/text_label"
             android:layout_width="match_parent"

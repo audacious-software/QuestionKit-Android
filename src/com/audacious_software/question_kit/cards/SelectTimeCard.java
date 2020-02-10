@@ -7,13 +7,15 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
 
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
-import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +41,7 @@ public class SelectTimeCard extends SingleLineTextInputCard {
 
         final SelectTimeCard me = this;
 
-        final TextInputAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
+        final AppCompatAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
 
         field.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -96,12 +98,30 @@ public class SelectTimeCard extends SingleLineTextInputCard {
         });
     }
 
+    public void updateValue(Object value) {
+        String text = (String) value;
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        try {
+            Date date = format.parse(text);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            this.setSelectedTime(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void setupChangeListener(ViewGroup parent) {
         // Intentionally do nothing...
     }
 
     public void setSelectedTime(int hour, int minute) {
-        TextInputAutoCompleteTextView field = this.findViewById(R.id.answer_field);
+        AppCompatAutoCompleteTextView field = this.findViewById(R.id.answer_field);
+
         Context context = this.getContext();
 
         java.text.DateFormat format = DateFormat.getTimeFormat(context);

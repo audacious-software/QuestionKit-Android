@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
-import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
+// import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -18,7 +20,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MultiLineTextInputCard extends QuestionCard {
-    private TextInputAutoCompleteTextView mTextView = null;
+    private AppCompatAutoCompleteTextView mTextView = null;
 
     public MultiLineTextInputCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
         super(activity, prompt, defaultLanguage);
@@ -39,7 +41,7 @@ public class MultiLineTextInputCard extends QuestionCard {
 
         final Activity activity = this.getActivity();
 
-        final TextInputAutoCompleteTextView textView = parent.findViewById(R.id.answer_field);
+        final AppCompatAutoCompleteTextView textView = parent.findViewById(R.id.answer_field);
 
         if (activity instanceof QuestionCard.QuestionAutofillSuggestionProvider) {
             QuestionCard.QuestionAutofillSuggestionProvider provider = (QuestionCard.QuestionAutofillSuggestionProvider) activity;
@@ -57,10 +59,10 @@ public class MultiLineTextInputCard extends QuestionCard {
         }
 
         if (prompt.has("value")) {
-            textView.setText(prompt.getString("value"));
+            this.updateValue(prompt.getString("value"));
         }
 
-        this.mTextView = mTextView;
+        this.mTextView = textView;
     }
 
     public String description() {
@@ -76,7 +78,7 @@ public class MultiLineTextInputCard extends QuestionCard {
     protected void setupChangeListener(ViewGroup parent) {
         final MultiLineTextInputCard me = this;
 
-        TextInputAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
+        AppCompatAutoCompleteTextView field = parent.findViewById(R.id.answer_field);
 
         field.addTextChangedListener(new TextWatcher() {
             @Override

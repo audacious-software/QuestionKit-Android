@@ -4,15 +4,16 @@ import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
-import com.audacious_software.question_kit.views.TextInputAutoCompleteTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SingleLineTextInputCard extends MultiLineTextInputCard {
-    private TextInputAutoCompleteTextView mField = null;
+    private AppCompatAutoCompleteTextView mField = null;
 
     public SingleLineTextInputCard(QuestionsActivity activity, JSONObject prompt, String defaultLanguage) {
         super(activity, prompt, defaultLanguage);

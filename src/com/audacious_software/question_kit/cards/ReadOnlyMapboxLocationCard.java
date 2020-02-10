@@ -4,6 +4,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
@@ -44,12 +47,30 @@ public class ReadOnlyMapboxLocationCard extends ReadOnlyTextCard {
             locations.add(latLng);
         }
 
+        final SwitchCompat styleSwitch = this.findViewById(R.id.style_switch);
+
+
         final MapView mapView = this.findViewById(R.id.mapbox_map_view);
         mapView.onCreate(null);
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             public void onMapReady(final MapboxMap map) {
-                map.setStyle(Style.SATELLITE_STREETS);
+                if (styleSwitch.isChecked()) {
+                    map.setStyle(Style.SATELLITE_STREETS);
+                } else {
+                    map.setStyle(Style.MAPBOX_STREETS);
+                }
+
+                styleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        if (checked) {
+                            map.setStyle(Style.SATELLITE_STREETS);
+                        } else {
+                            map.setStyle(Style.MAPBOX_STREETS);
+                        }
+                    }
+                });
 
                 map.getUiSettings().setAllGesturesEnabled(false);
 
