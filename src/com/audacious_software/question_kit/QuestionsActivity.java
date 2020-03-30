@@ -611,30 +611,32 @@ public class QuestionsActivity extends AppCompatActivity {
     private List<String> fetchActivePrompts() {
         ArrayList<String> active = new ArrayList<>();
 
-        try {
-            JSONArray prompts = this.mDefinition.getJSONArray("prompts");
+        if (this.mDefinition != null) {
+            try {
+                JSONArray prompts = this.mDefinition.getJSONArray("prompts");
 
-            for (int i = 0; i < prompts.length(); i++) {
-                JSONObject prompt = prompts.getJSONObject(i);
+                for (int i = 0; i < prompts.length(); i++) {
+                    JSONObject prompt = prompts.getJSONObject(i);
 
-                if (prompt.has("constraints")) {
-                    JSONArray constraints = prompt.getJSONArray("constraints");
+                    if (prompt.has("constraints")) {
+                        JSONArray constraints = prompt.getJSONArray("constraints");
 
-                    if (prompt.has("constraint-matches") && "any".equals(prompt.getString("constraint-matches"))) {
-                        if (this.evaluateOrConstraints(constraints, this.mAnswers)) {
-                            active.add(prompt.getString("key"));
+                        if (prompt.has("constraint-matches") && "any".equals(prompt.getString("constraint-matches"))) {
+                            if (this.evaluateOrConstraints(constraints, this.mAnswers)) {
+                                active.add(prompt.getString("key"));
+                            }
+                        } else {
+                            if (this.evaluateConstraints(constraints, this.mAnswers)) {
+                                active.add(prompt.getString("key"));
+                            }
                         }
                     } else {
-                        if (this.evaluateConstraints(constraints, this.mAnswers)) {
-                            active.add(prompt.getString("key"));
-                        }
+                        active.add(prompt.getString("key"));
                     }
-                } else {
-                    active.add(prompt.getString("key"));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         return active;
