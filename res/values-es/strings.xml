@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_kit_date_range">%1$s - %2$s</string>
+    <string name="question_kit_title_select_date_range">Seleccionar rango de fechas</string>
+    <string name="question_kit_instructions_select_date_range">Seleccione el intervalo de fechas anterior tocando el primer y último día del período de tiempo en cuestión.</string>
+</resources>
