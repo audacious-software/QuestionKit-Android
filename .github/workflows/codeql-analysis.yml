@@ -10,7 +10,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze, build, and lint
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,8 +32,11 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
-    - name: Build Project
+    - name: Build project
       run: gradle assembleDebug
 
-    - name: Perform CodeQL Analysis
+    - name: Build project
+      run: gradle lint
+
+    - name: Perform CodeQL analysis
       uses: github/codeql-action/analyze@v1
