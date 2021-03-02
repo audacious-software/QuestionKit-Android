@@ -364,6 +364,10 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
+    public Object fetchValue(String key) {
+        return this.mAnswers.get(key);
+    }
+
     public void updateValue(String key, Object value) {
         if (value != null) {
             this.mAnswers.put(key, value);

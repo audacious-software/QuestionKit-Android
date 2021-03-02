@@ -147,4 +147,8 @@ public class QuestionCard extends FrameLayout {
     public void updateValue(Object value) {
         // Implement in subclasses.
     }
+
+    public Object fetchValue(String key) {
+        return this.mActivity.fetchValue(key);
+    }
 }

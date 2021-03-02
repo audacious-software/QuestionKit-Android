@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
@@ -57,11 +56,26 @@ public class SelectTimeCard extends SingleLineTextInputCard {
                             int hour = 0;
                             int minute = 0;
 
-                            if (prompt.has("default")) {
+                            SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
+                            String value = (String) me.fetchValue(me.key());
+
+                            if (value != null) {
                                 try {
-                                    SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                                    Date date = format.parse(value);
 
+                                    Calendar calendar = Calendar.getInstance();
+                                    calendar.setTime(date);
+
+                                    hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                    minute = calendar.get(Calendar.MINUTE);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            if (value == null && prompt.has("default")) {
+                                try {
                                     Date date = format.parse(prompt.getString("default"));
 
                                     Calendar calendar = Calendar.getInstance();
