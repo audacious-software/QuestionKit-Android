@@ -28,9 +28,15 @@ jobs:
 
     - name: Build project
       run: gradle assembleDebug --warning-mode all
+      env:
+        ORG_GRADLE_PROJECT_mapbox_key: ${{ secrets.MAPBOXDOWNLOADKEY }}
 
     - name: Run unit tests
       run: gradle testDebugUnitTest --warning-mode all
+      env:
+        ORG_GRADLE_PROJECT_mapbox_key: ${{ secrets.MAPBOXDOWNLOADKEY }}
 
     - name: Lint project
       run: gradle lint --warning-mode all
+      env:
+        ORG_GRADLE_PROJECT_mapbox_key: ${{ secrets.MAPBOXDOWNLOADKEY }}
