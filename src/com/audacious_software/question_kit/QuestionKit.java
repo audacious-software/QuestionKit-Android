@@ -97,7 +97,7 @@ public class QuestionKit {
             end = new Date(Long.MAX_VALUE);
         }
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZ");
 
         ArrayList<ScheduledQuestionSet> matches = new ArrayList<>();
 
