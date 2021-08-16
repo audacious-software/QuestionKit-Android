@@ -1,5 +1,7 @@
 package com.audacious_software.question_kit;
 
+import android.annotation.SuppressLint;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +26,7 @@ public class ScheduledQuestionSet {
         this.end = end;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public ScheduledQuestionSet(String identifier, JSONObject scheduleJson, JSONObject questionsJson) throws JSONException {
         this.identifier = identifier;
         this.name = questionsJson.getString("name");

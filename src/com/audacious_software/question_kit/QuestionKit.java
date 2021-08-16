@@ -1,5 +1,6 @@
 package com.audacious_software.question_kit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -92,6 +93,7 @@ public class QuestionKit {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public List<ScheduledQuestionSet> schedule(Date start, Date end) {
         if (end == null) {
             end = new Date(Long.MAX_VALUE);
