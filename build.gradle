@@ -4,9 +4,6 @@ buildscript {
     repositories {
         mavenCentral()
         google()
-        flatDir {
-            dirs 'libs'
-        }
         google()
     }
 
@@ -18,7 +15,6 @@ buildscript {
 repositories {
     google()
     mavenCentral()
-    jcenter()
     maven {
         url "https://jitpack.io"
     }
@@ -32,15 +28,12 @@ repositories {
             password = project.properties['mapbox_key']
         }
     }
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 android {
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 30
+        targetSdkVersion 31
         compileSdkVersion 30
 
         versionCode 1
@@ -75,5 +68,6 @@ android {
         implementation 'commons-io:commons-io:2.6'
         implementation 'org.apache.commons:commons-lang3:3.9'
         implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.6.0'
+        implementation fileTree(include: ["*.jar"], dir: "libs")
     }
 }
