@@ -32,7 +32,7 @@ repositories {
 
 android {
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 32
         compileSdkVersion 32
 
