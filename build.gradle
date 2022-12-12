@@ -7,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'
     }
 }
 
@@ -54,8 +54,8 @@ android {
     }
 
     dependencies {
-        api 'com.squareup.okhttp3:okhttp:3.12.3' // Retaining older version for Android 4 support
-        api 'com.squareup.okhttp3:okhttp-tls:3.12.3'
+        api 'com.squareup.okhttp3:okhttp:4.9.2'
+        api 'com.squareup.okhttp3:okhttp-tls:4.9.0'
 
         implementation 'androidx.appcompat:appcompat:1.5.1'
         implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -63,7 +63,7 @@ android {
         implementation 'androidx.legacy:legacy-support-v4:1.0.0'
         implementation 'androidx.cardview:cardview:1.0.0'
         implementation 'androidx.browser:browser:1.4.0'
-        implementation 'com.google.android.material:material:1.6.1'
+        implementation 'com.google.android.material:material:1.7.0'
         // implementation 'com.google.android.gms:play-services-maps:16.1.0'
         implementation 'com.google.android.gms:play-services-maps:18.1.0'
         implementation 'com.google.maps.android:android-maps-utils:0.5'
