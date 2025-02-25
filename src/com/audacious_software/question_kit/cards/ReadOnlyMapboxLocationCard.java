@@ -1,8 +1,5 @@
 package com.audacious_software.question_kit.cards;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
@@ -11,13 +8,15 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.audacious_software.question_kit.QuestionsActivity;
 import com.audacious_software.question_kit.R;
 
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.geojson.Point;
+import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.MapView;
+import com.mapbox.maps.MapboxMap;
+import com.mapbox.maps.Style;
+import com.mapbox.maps.ViewAnnotationOptions;
+import com.mapbox.maps.plugin.gestures.GesturesPlugin;
+import com.mapbox.maps.plugin.gestures.GesturesUtils;
+import com.mapbox.maps.viewannotation.ViewAnnotationManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,71 +34,63 @@ public class ReadOnlyMapboxLocationCard extends ReadOnlyTextCard {
 
         final ReadOnlyMapboxLocationCard me = this;
 
-        final ArrayList<LatLng> locations = new ArrayList<>();
+        final ArrayList<Point> locations = new ArrayList<>();
 
         JSONArray points = prompt.getJSONArray("points");
 
         for (int i = 0; i < points.length(); i++) {
             JSONObject point = points.getJSONObject(i);
 
-            LatLng latLng = new LatLng(point.getDouble("latitude"), point.getDouble("longitude"));
+            Point latLng = Point.fromLngLat(point.getDouble("longitude"), point.getDouble("latitude"));
 
             locations.add(latLng);
         }
 
         final SwitchCompat styleSwitch = this.findViewById(R.id.style_switch);
 
-
         final MapView mapView = this.findViewById(R.id.mapbox_map_view);
-        mapView.onCreate(null);
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            public void onMapReady(final MapboxMap map) {
-                if (styleSwitch.isChecked()) {
-                    map.setStyle(Style.SATELLITE_STREETS);
+        MapboxMap map = mapView.getMapboxMap();
+
+        if (styleSwitch.isChecked()) {
+            map.loadStyle(Style.SATELLITE_STREETS);
+        } else {
+            map.loadStyle(Style.MAPBOX_STREETS);
+        }
+
+        styleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    map.loadStyle(Style.SATELLITE_STREETS);
                 } else {
-                    map.setStyle(Style.MAPBOX_STREETS);
+                    map.loadStyle(Style.MAPBOX_STREETS);
                 }
-
-                styleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                        if (checked) {
-                            map.setStyle(Style.SATELLITE_STREETS);
-                        } else {
-                            map.setStyle(Style.MAPBOX_STREETS);
-                        }
-                    }
-                });
-
-                map.getUiSettings().setAllGesturesEnabled(false);
-
-                Handler handler = new Handler(Looper.getMainLooper());
-
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        final DisplayMetrics metrics = new DisplayMetrics();
-                        me.getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-                        if (locations.size() > 0) {
-                            try {
-                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(locations.get(0), 16));
-                            } catch (IllegalStateException e) {
-                                e.printStackTrace();
-                                // View not ready to update yet...
-                            }
-                        }
-
-                        for (LatLng latLng : locations) {
-                            map.addMarker(new MarkerOptions().position(latLng));
-                        }
-                    }
-                }, 500);
-
-                mapView.onResume();
             }
         });
+
+        GesturesPlugin gestures = GesturesUtils.getGestures(mapView);
+        gestures.setPitchEnabled(false);
+        gestures.setRotateEnabled(false);
+        gestures.setDoubleTapToZoomInEnabled(false);
+
+        CameraOptions.Builder cameraBuilder = new CameraOptions.Builder();
+        cameraBuilder.center(locations.get(0));
+
+        ViewAnnotationManager viewAnnotations = mapView.getViewAnnotationManager();
+
+        if (locations.size() > 0) {
+            cameraBuilder.zoom(16.0);
+
+            for (Point location : locations) {
+                ViewAnnotationOptions.Builder options = new ViewAnnotationOptions.Builder();
+                cameraBuilder.center(location);
+
+                viewAnnotations.addViewAnnotation(R.layout.view_annotation_map_pin, options.build());
+            }
+        }
+
+        map.setCamera(cameraBuilder.build());
     }
 
     protected int getCardLayoutResource() {

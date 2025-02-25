@@ -7,24 +7,28 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:8.5.2'
     }
 }
 
-repositories {
-    google()
-    mavenCentral()
-    maven {
-        url "https://jitpack.io"
-    }
-    maven {
-        url 'https://api.mapbox.com/downloads/v2/releases/maven'
-        authentication {
-            basic(BasicAuthentication)
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
+        maven {
+            url "https://jitpack.io"
         }
-        credentials {
-            username = 'mapbox'
-            password = project.properties['mapbox_key']
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username = 'mapbox'
+                password = project.properties['MAPBOX_DOWNLOADS_TOKEN']
+            }
         }
     }
 }
@@ -33,8 +37,8 @@ android {
     namespace 'com.audacious_software.question_kit'
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 32
-        compileSdkVersion 32
+        targetSdk 34
+        compileSdk 34
 
         versionCode 1
         versionName "1.0"
@@ -54,22 +58,27 @@ android {
     }
 
     dependencies {
-        api 'com.squareup.okhttp3:okhttp:4.9.2'
+        api 'com.squareup.okhttp3:okhttp:4.12.0'
         api 'com.squareup.okhttp3:okhttp-tls:4.9.0'
 
-        implementation 'androidx.appcompat:appcompat:1.5.1'
-        implementation 'androidx.recyclerview:recyclerview:1.2.1'
-        implementation 'androidx.media:media:1.6.0'
+        implementation 'androidx.appcompat:appcompat:1.7.0'
+        implementation 'androidx.recyclerview:recyclerview:1.4.0'
+        implementation 'androidx.media:media:1.7.0'
         implementation 'androidx.legacy:legacy-support-v4:1.0.0'
         implementation 'androidx.cardview:cardview:1.0.0'
-        implementation 'androidx.browser:browser:1.4.0'
-        implementation 'com.google.android.material:material:1.7.0'
+        implementation 'androidx.browser:browser:1.8.0'
+        implementation 'com.google.android.material:material:1.12.0'
         // implementation 'com.google.android.gms:play-services-maps:16.1.0'
-        implementation 'com.google.android.gms:play-services-maps:18.1.0'
+        implementation 'com.google.android.gms:play-services-maps:19.1.0'
         implementation 'com.google.maps.android:android-maps-utils:0.5'
         implementation 'com.prolificinteractive:material-calendarview:1.4.3'
-        implementation 'commons-io:commons-io:2.6'
-        implementation 'org.apache.commons:commons-lang3:3.9'
-        implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.7.0'
+        implementation 'commons-io:commons-io:2.13.0'
+        implementation 'org.apache.commons:commons-lang3:3.11'
+
+        implementation 'com.mapbox.maps:android:11.5.1'
+    }
+    buildFeatures {
+        renderScript true
+        aidl true
     }
 }
